@@ -1,3 +1,20 @@
+import createDateFromDDMMYYYY from "../utils/date_helper";
+
+interface CatData {
+  id: string;
+  nome: string;
+  sexo: string;
+  vacinado: boolean;
+  local: string;
+  status: string;
+  castrado: boolean;
+  data_ultima_vacinacao?: string;
+  caracteristicas_marcantes: string;
+  fotos: string[];
+  createdAt: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class Cat {
   id: string; // Unique identifier for the cat
   name: string; // Name of the cat
@@ -17,12 +34,12 @@ class Cat {
     sex: string,
     vaccinated: boolean,
     usualLocation: string,
-    status: string,
+    status: CatStatus,
     neutered: boolean,
-    lastVaccinationDate: Date,
     distinctiveFeatures: string,
     photos: string[],
-    createdAt: Date
+    createdAt: Date,
+    lastVaccinationDate?: Date
   ) {
     this.id = id;
     this.name = name;
@@ -43,19 +60,21 @@ class Cat {
    * @param dict - Dictionary containing cat properties.
    * @returns A new Cat instance.
    */
-  static fromDict(dict: { [key: string]: any }): Cat {
+  static fromDict(dict: CatData): Cat {
     return new Cat(
       dict.id,
-      dict.name,
-      dict.sex,
-      dict.vaccinated,
-      dict.usualLocation,
-      dict.status,
-      dict.neutered,
-      new Date(dict.lastVaccinationDate),
-      dict.distinctiveFeatures,
-      dict.photos,
-      new Date(dict.createdAt)
+      dict.nome,
+      dict.sexo,
+      dict.vacinado,
+      dict.local,
+      dict.status as CatStatus,
+      dict.castrado,
+      dict.caracteristicas_marcantes,
+      dict.fotos,
+      dict.createdAt == null ? new Date(Date.now()) : new Date(dict.createdAt),
+      dict.data_ultima_vacinacao
+        ? createDateFromDDMMYYYY(dict.data_ultima_vacinacao)
+        : undefined
     );
   }
 
@@ -64,7 +83,9 @@ class Cat {
    *
    * @returns A dictionary containing cat properties.
    */
-  asDict(): { [key: string]: any } {
+  asDict(): {
+    [key: string]: string | undefined | boolean | Date | string[] | CatStatus;
+  } {
     return {
       id: this.id,
       name: this.name,
@@ -103,13 +124,14 @@ class Cat {
   }
 }
 
-/**
- * Enum-like object representing possible statuses for a cat.
- */
-class CatStatus {
-  static readonly Adopted: { code: "adotado"; label: "Adotado" };
-  static readonly OnCampus: { code: "campus"; label: "No campus" };
-  static readonly OnTreatment: { code: "tratamento"; label: "Em tratamento" };
-  static readonly Fostered: { code: "adotado"; label: "Adotado" };
-  static readonly Deceased: { code: "falecido"; label: "Falecido" };
+enum CatStatus {
+  adopted = "adotado",
+  on_campus = "campus",
+  on_treatment = "tratamento",
+  deceased = "falecido",
+  unknown = "desconhecido",
 }
+
+export default Cat;
+export type { CatData };
+export { CatStatus };

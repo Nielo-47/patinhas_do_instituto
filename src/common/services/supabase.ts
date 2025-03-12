@@ -1,12 +1,12 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-export interface DatabaseRecord {
-  id?: string;
-  created_at?: string;
-  [key: string]: any;
-}
+// export interface DatabaseRecord {
+//   id?: string;
+//   created_at?: string;
+//   [key: string]: any;
+// }
 
-export class SupabaseService<T extends DatabaseRecord> {
+export class SupabaseService<T> {
   private supabase: SupabaseClient;
   private tableName: string;
 
@@ -63,49 +63,49 @@ export class SupabaseService<T extends DatabaseRecord> {
    * @param options Optional query parameters
    * @returns Array of records or empty array if an error occurred
    */
-  async getAll(options?: {
-    limit?: number;
-    offset?: number;
-    orderBy?: { column: string; ascending?: boolean };
-    filters?: { column: string; operator: string; value: any }[];
-  }): Promise<T[]> {
-    let query = this.supabase.from(this.tableName).select("*");
+  // async getAll(options?: {
+  //   limit?: number;
+  //   offset?: number;
+  //   orderBy?: { column: string; ascending?: boolean };
+  //   filters?: { column: string; operator: string; value: any }[];
+  // }): Promise<T[]> {
+  //   let query = this.supabase.from(this.tableName).select("*");
 
-    // Apply filters if provided
-    if (options?.filters) {
-      for (const filter of options.filters) {
-        query = query.filter(filter.column, filter.operator, filter.value);
-      }
-    }
+  //   // Apply filters if provided
+  //   if (options?.filters) {
+  //     for (const filter of options.filters) {
+  //       query = query.filter(filter.column, filter.operator, filter.value);
+  //     }
+  //   }
 
-    // Apply sorting if provided
-    if (options?.orderBy) {
-      query = query.order(options.orderBy.column, {
-        ascending: options.orderBy.ascending ?? true,
-      });
-    }
+  //   // Apply sorting if provided
+  //   if (options?.orderBy) {
+  //     query = query.order(options.orderBy.column, {
+  //       ascending: options.orderBy.ascending ?? true,
+  //     });
+  //   }
 
-    // Apply pagination if provided
-    if (options?.limit) {
-      query = query.limit(options.limit);
-    }
+  //   // Apply pagination if provided
+  //   if (options?.limit) {
+  //     query = query.limit(options.limit);
+  //   }
 
-    if (options?.offset) {
-      query = query.range(
-        options.offset,
-        options.offset + (options.limit || 10) - 1
-      );
-    }
+  //   if (options?.offset) {
+  //     query = query.range(
+  //       options.offset,
+  //       options.offset + (options.limit || 10) - 1
+  //     );
+  //   }
 
-    const { data, error } = await query;
+  //   const { data, error } = await query;
 
-    if (error) {
-      console.error("Error retrieving records:", error);
-      return [];
-    }
+  //   if (error) {
+  //     console.error("Error retrieving records:", error);
+  //     return [];
+  //   }
 
-    return data as T[];
-  }
+  //   return data as T[];
+  // }
 
   /**
    * Update a record by its ID
