@@ -14,7 +14,6 @@ interface CatData {
   createdAt: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class Cat {
   id: string; // Unique identifier for the cat
   name: string; // Name of the cat
