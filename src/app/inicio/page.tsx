@@ -1,13 +1,12 @@
-// 'use client'
+// "use client";
 
 // import { createClient, RealtimeChannel } from "@supabase/supabase-js";
 // import { useEffect, useState } from "react";
-// import Cat from "../../common/models/cat";
 // import { getAllCats } from "@/common/services/cats_service";
-// import { cookies } from 'next/headers'
+// import Gato from "@/common/models/gato";
 
 // export default async function App() {
-//   const [cats, setCats] = useState<Cat[]>([]);
+//   const [cats, setCats] = useState<Gato[]>([]);
 //   const [subscription, setSubscription] = useState<RealtimeChannel | null>(
 //     null
 //   );
@@ -21,7 +20,7 @@
 //         const subscription = await getAllCats((currentCats) => {
 //           setCats(currentCats);
 //         });
-
+// a
 //         setSubscription(subscription);
 //         setLoading(false);
 //       } catch (err) {
