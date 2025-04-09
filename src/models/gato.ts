@@ -1,4 +1,10 @@
-import createDateFromDDMMYYYY from "../../utils/date_helper";
+import createDateFromDDMMYYYY from "../utils/date_helper";
+
+interface Foto {
+  id: string;
+  url: string;
+  gatoId: string;
+}
 
 interface DadosGato {
   id: string;
@@ -133,5 +139,5 @@ enum StatusGato {
 }
 
 export default Gato;
-export type { DadosGato };
+export type { DadosGato, Foto };
 export { StatusGato };
