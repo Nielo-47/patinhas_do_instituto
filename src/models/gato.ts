@@ -9,43 +9,46 @@ interface Foto {
 interface DadosGato {
   id: string;
   nome: string;
-  sexo: string;
-  vacinado: boolean;
-  local: string;
-  status: string;
-  castrado: boolean;
-  data_ultima_vacinacao?: string;
+  sexo: Sexo;
+  vacinado: StatusInformacao;
+  localHabitual: string;
+  status: StatusGato;
+  castrado: StatusInformacao;
   caracteristicas_marcantes: string;
   fotos: string[];
+  data_criacao: Date;
+  data_ultima_vacinacao?: Date;
+  atualizado_em?: string;
   criado_em: string;
-  atualizado_em: string;
 }
 
 class Gato {
-  id: string; // Identificador único do gato
-  nome: string; // Nome do gato
-  sexo: string; // Sexo do gato
-  vacinado: boolean; // Status de vacinação
-  localHabitual: string; // Local habitual do gato
-  status: StatusGato; // Status atual do gato
-  castrado: boolean; // Status de castração
-  dataUltimaVacinacao?: Date; // Data da última vacinação
-  caracteristicasMarcantes: string; // Características marcantes do gato
-  fotos: string[]; // Array de identificadores únicos das fotos
-  dataCriacao: Date; // Data de criação do registro do gato
+  id: string;
+  nome: string;
+  sexo: Sexo;
+  vacinado: StatusInformacao;
+  localHabitual: string;
+  status: StatusGato;
+  castrado: StatusInformacao;
+  caracteristicas_marcantes: string;
+  fotos: string[];
+  data_criacao: Date;
+  data_ultima_vacinacao?: Date;
+  atualizado_em?: Date;
 
   constructor(
     id: string,
     nome: string,
-    sexo: string,
-    vacinado: boolean,
+    sexo: Sexo,
+    vacinado: StatusInformacao,
     localHabitual: string,
     status: StatusGato,
-    castrado: boolean,
-    caracteristicasMarcantes: string,
+    castrado: StatusInformacao,
+    caracteristicas_marcantes: string,
     fotos: string[],
-    dataCriacao: Date,
-    dataUltimaVacinacao?: Date
+    data_criacao: Date,
+    atualizado_em?: Date,
+    data_ultima_vacinacao?: Date
   ) {
     this.id = id;
     this.nome = nome;
@@ -54,10 +57,10 @@ class Gato {
     this.localHabitual = localHabitual;
     this.status = status;
     this.castrado = castrado;
-    this.dataUltimaVacinacao = dataUltimaVacinacao;
-    this.caracteristicasMarcantes = caracteristicasMarcantes;
+    this.data_ultima_vacinacao = data_ultima_vacinacao;
+    this.caracteristicas_marcantes = caracteristicas_marcantes;
     this.fotos = fotos;
-    this.dataCriacao = dataCriacao;
+    this.data_criacao = data_criacao;
   }
 
   /**
@@ -72,15 +75,13 @@ class Gato {
       dict.nome,
       dict.sexo,
       dict.vacinado,
-      dict.local,
+      dict.localHabitual,
       dict.status as StatusGato,
       dict.castrado,
       dict.caracteristicas_marcantes,
       dict.fotos,
       dict.criado_em == null ? new Date(Date.now()) : new Date(dict.criado_em),
-      dict.data_ultima_vacinacao
-        ? createDateFromDDMMYYYY(dict.data_ultima_vacinacao)
-        : undefined
+      (dict.data_ultima_vacinacao = dict.data_ultima_vacinacao)
     );
   }
 
@@ -100,10 +101,10 @@ class Gato {
       localHabitual: this.localHabitual,
       status: this.status,
       castrado: this.castrado,
-      dataUltimaVacinacao: this.dataUltimaVacinacao?.toISOString(),
-      caracteristicasMarcantes: this.caracteristicasMarcantes,
+      data_ultima_vacinacao: this.data_ultima_vacinacao?.toISOString(),
+      caracteristicas_marcantes: this.caracteristicas_marcantes,
       fotos: this.fotos,
-      dataCriacao: this.dataCriacao.toISOString(),
+      data_criacao: this.data_criacao.toISOString(),
     };
   }
 
@@ -122,10 +123,10 @@ class Gato {
       this.localHabitual === outroGato.localHabitual &&
       this.status === outroGato.status &&
       this.castrado === outroGato.castrado &&
-      this.dataUltimaVacinacao?.getTime() ===
-        outroGato.dataUltimaVacinacao?.getTime() &&
-      this.caracteristicasMarcantes === outroGato.caracteristicasMarcantes &&
-      this.dataCriacao.getTime() === outroGato.dataCriacao.getTime()
+      this.data_ultima_vacinacao?.getTime() ===
+        outroGato.data_ultima_vacinacao?.getTime() &&
+      this.caracteristicas_marcantes === outroGato.caracteristicas_marcantes &&
+      this.data_criacao.getTime() === outroGato.data_criacao.getTime()
     );
   }
 }
@@ -136,6 +137,18 @@ enum StatusGato {
   em_tratamento = "tratamento",
   falecido = "falecido",
   desconhecido = "desconhecido",
+}
+
+enum StatusInformacao {
+  sim = "SIM",
+  nao = "NAO",
+  desconhecido = "DESCONHECIDO",
+}
+
+enum Sexo {
+  masculino = "MASCULINO",
+  feminino = "MASCULINO",
+  desconhecido = "DESCONHECIDO",
 }
 
 export default Gato;

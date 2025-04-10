@@ -40,24 +40,19 @@ export async function obterTodosOsGatos(): Promise<DadosGato[]> {
 
 export async function obterFotosDoGato(gatoId: string): Promise<Foto[]> {
   const database = await getDatabaseServerClient();
-  const { data, error } = await database
+
+  const { data: list, error } = await database.storage
     .from("fotos")
-    .select("id, url, gatoId")
-    .eq("gatoId", gatoId);
+    .list(gatoId + "/");
 
   if (error) throw error;
 
-  for (const f of data) {
-    const { data: signedUrlData, error } = await database.storage
-      .from("fotos")
-      .createSignedUrl(`${f.id}.jpg`, 60);
+  const fotos: Foto[] = (list || []).map((file) => ({
+    id: file.name.split(".")[0], // usando o nome do arquivo como ID (removendo extensão)
+    url: database.storage.from(`fotos/${gatoId}`).getPublicUrl(file.name).data
+      .publicUrl,
+    gatoId: gatoId,
+  }));
 
-    if (error) throw error;
-
-    f.url = signedUrlData.signedUrl;
-  }
-
-  console.log(data);
-
-  return data || [];
+  return fotos;
 }

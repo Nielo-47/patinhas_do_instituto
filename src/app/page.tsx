@@ -1,6 +1,9 @@
+"use server";
+
 import Gato from "@/models/gato";
 import { obterTodosOsGatos } from "@/actions/gatos";
-import CartaoGato from "./components/cat_card/CartaoGato";
+import CartaoGato from "@/components/cartao_gato/CartaoGato";
+import "./home.scss";
 
 async function Home() {
   const gatos = await obterTodosOsGatos().then((gatos) =>
@@ -8,18 +11,14 @@ async function Home() {
   );
 
   return (
-    <div>
-      <h1>Cats</h1>
-      <ul>
-        {gatos.map((g) =>
-          // <li key={g.id}>
-          //   {g.nome} - {g.sexo} - {g.status} - {g.caracteristicasMarcantes}
-          // </li>
-          CartaoGato(g)
-        )}
-      </ul>
+    <div className="container">
+      <h1 className="title">Cats</h1>
+      <div className="cat-grid">
+        {gatos.map((gato) => (
+          <CartaoGato key={gato.id} gato={gato} />
+        ))}
+      </div>
     </div>
   );
 }
-
 export default Home;
