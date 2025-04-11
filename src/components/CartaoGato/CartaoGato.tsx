@@ -1,26 +1,27 @@
 import Image from "next/image";
 import React, { Suspense } from "react";
-import "./CartaoGatoStyle.scss";
 import Gato, { Foto } from "@/models/gato";
 import { obterFotosDoGato } from "@/actions/gatos";
 import { Cat, AlertCircle, Scissors, Syringe } from "lucide-react";
+import styles from "./CartaoGato.module.scss";
 
 export default function CartaoGato({ gato }: { gato: Gato }) {
   return (
-    <div className="cartao-gato" key={gato.id}>
-      <div className="cartao-gato__container-imagem">
+    <div className={styles.cartaoGato} key={gato.id}>
+      <div className={styles.containerImagem}>
         <Suspense fallback={<SpinnerCarregamento />}>
           <ExibicaoFotosGato id={gato.id} nome={gato.nome} />
         </Suspense>
       </div>
-      <div className="cartao-gato__informacoes">
-        <h3 className="cartao-gato__nome">{gato.nome}</h3>
-        <div className="cartao-gato__icones">
+      <div className={styles.informacoes}>
+        <h2 className={styles.nome}>{gato.nome}</h2>
+        <div className={styles.divisor}></div>
+        <div className={styles.icones}>
           {gato.castrado === "SIM" ? (
-            <Scissors className="icone" size={20} />
+            <Scissors className={styles.icone} size={20} />
           ) : null}
           {gato.vacinado === "SIM" ? (
-            <Syringe className="icone" size={20} />
+            <Syringe className={styles.icone} size={20} />
           ) : null}
         </div>
       </div>
@@ -31,8 +32,8 @@ export default function CartaoGato({ gato }: { gato: Gato }) {
 // Componente de carregamento com animação
 function SpinnerCarregamento() {
   return (
-    <div className="container-carregamento">
-      <div className="carregando"></div>
+    <div className={styles.containerCarregamento}>
+      <div className={styles.carregando}></div>
       <p>Carregando fotos...</p>
     </div>
   );
@@ -54,15 +55,15 @@ async function ExibicaoFotosGato({ id, nome }: { id: string; nome: string }) {
 
   if (erro) {
     return (
-      <div className="erro">
-        <AlertCircle className="icone-erro" size={32} />
+      <div className={styles.erro}>
+        <AlertCircle className={styles.iconeErro} size={32} />
         <p>Erro ao carregar fotos</p>
       </div>
     );
   } else if (urls.length === 0) {
     return (
-      <div className="sem-fotos">
-        <Cat className="icone-sem-foto" size={32} />
+      <div className={styles.semFotos}>
+        <Cat className={styles.iconeSemFoto} size={32} />
         <p>Nenhuma foto disponível</p>
       </div>
     );
@@ -74,8 +75,9 @@ async function ExibicaoFotosGato({ id, nome }: { id: string; nome: string }) {
       alt={`Foto do gato ${nome}`}
       width={300}
       height={200}
-      className="imagem-gato"
-      unoptimized
+      // 2. Usar styles.nomeDaClasse (camelCase)
+      className={styles.imagemGato}
+      unoptimized // Mantenha se necessário
     />
   );
 }

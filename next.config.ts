@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: process.env.SUPABASE_DOMAIN!,
+        hostname: process.env.NEXT_PUBLIC_SUPABASE_URL!,
       },
     ], // Add your Supabase storage domain here
   },
