@@ -2,7 +2,7 @@
 
 import Gato from "@/models/gato";
 import { obterTodosOsGatos } from "@/actions/gatos";
-import CartaoGato from "@/components/cartao_gato/CartaoGato";
+import CartaoGato from "@/components/CartaoGato/CartaoGato";
 import "./home.scss";
 
 async function Home() {
