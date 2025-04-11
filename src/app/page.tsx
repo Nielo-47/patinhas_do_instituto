@@ -4,6 +4,7 @@ import Gato from "@/models/gato";
 import { obterTodosOsGatos } from "@/actions/gatos";
 import CartaoGato from "@/components/CartaoGato/CartaoGato";
 import "./home.scss";
+import { Itim } from "next/font/google";
 
 async function Home() {
   const gatos = await obterTodosOsGatos().then((gatos) =>
@@ -11,13 +12,10 @@ async function Home() {
   );
 
   return (
-    <div className="container">
-      <h1 className="title">Cats</h1>
-      <div className="cat-grid">
-        {gatos.map((gato) => (
-          <CartaoGato key={gato.id} gato={gato} />
-        ))}
-      </div>
+    <div className="cat-grid">
+      {gatos.map((gato) => (
+        <CartaoGato key={gato.id} gato={gato} />
+      ))}
     </div>
   );
 }

@@ -1,13 +1,19 @@
-@import "../../styles/variaveis.scss";
+@use "src/styles/variaveis" as *;
 
 .cartaoGato {
   position: relative;
-  width: 240px;
+  width: clamp(200px, 25vw, 240px); // 👈 responsive width
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   background-color: #{$cor-primaria};
   border: 3px solid #ff5733;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.08);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
 }
 
 /* Container da imagem no topo */
@@ -41,19 +47,14 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: $cor-secundaria;
-  font-weight: bold;
   font-size: medium;
   text-align: center;
   width: fit-content;
-  max-width: 100px;
+  max-width: 90%;
   text-overflow: ellipsis;
-}
-
-.divisor {
-  width: 100%;
-  height: 1px;
-  background-color: $cor-foco;
-  margin: 8px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: $cor-foco 1.5px solid;
 }
 
 /* Container de ícones */
@@ -61,11 +62,10 @@
   display: flex;
   justify-content: center;
   gap: 16px;
-  color: $cor-foco;
 
   // A classe .icone pode ser aninhada aqui para organização
   .icone {
-    color: #333;
+    color: $cor-foco;
     stroke-width: 2px;
   }
 }

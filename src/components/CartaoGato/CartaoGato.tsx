@@ -15,7 +15,6 @@ export default function CartaoGato({ gato }: { gato: Gato }) {
       </div>
       <div className={styles.informacoes}>
         <h2 className={styles.nome}>{gato.nome}</h2>
-        <div className={styles.divisor}></div>
         <div className={styles.icones}>
           {gato.castrado === "SIM" ? (
             <Scissors className={styles.icone} size={20} />

@@ -1,0 +1,117 @@
+@use "src/styles/variaveis" as *;
+
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: $cor-secundaria;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+.navbar {
+  background-color: $cor-foco;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: clamp(280px, 40vw, 600px); // scales with screen
+  height: clamp(50px, 7vh, 50px); // responsive height
+  border-radius: 25px;
+  padding: 0 clamp(10px, 2vw, 30px); // responsive horizontal padding
+  flex-wrap: wrap; // in case items overflow on small screens
+}
+
+.item {
+  color: white;
+  font-size: clamp(14px, 1.5vw, 20px);
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  padding: clamp(6px, 1vh, 10px);
+  border-radius: 25px;
+  height: clamp(25px, 4vh, 35px);
+  display: flex;
+  align-items: center;
+  white-space: nowrap; // prevents awkward wrapping
+
+  &:hover {
+    color: $cor-secundaria;
+    transform: scale(1.1);
+    cursor: pointer;
+    background-color: $cor-primaria;
+  }
+}
+
+.divisor {
+  width: 2px;
+  height: clamp(20px, 3vh, 30px);
+  background-color: white;
+  margin: 0 clamp(6px, 1vw, 12px);
+}
+
+.iconeUsuario {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  margin-right: 20px;
+  transition: all 0.3s ease-in-out;
+  stroke-width: 1px;
+
+  &:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+    background-color: $cor-foco;
+  }
+}
+
+@media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+      height: auto;
+      padding: 10px 0;
+      gap: 10px;
+    }
+  
+    .logo {
+      width: 60px;
+      height: 60px;
+      margin: 0;
+    }
+  
+    .navbar {
+      width: 90vw;
+      height: auto;
+      padding: 10px;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+  
+    .item {
+      font-size: clamp(14px, 3.5vw, 18px);
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .divisor {
+      width: 80%;
+      height: 2px;
+      margin: 10px 0;
+    }
+  
+    .iconeUsuario {
+      margin-right: 0;
+      margin-top: 5px;
+      width: 50px;
+      height: 50px;
+    }
+  }
+  

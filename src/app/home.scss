@@ -1,12 +1,10 @@
-.container {
+.cat-grid {
   max-width: 1300px;
   margin: 0 auto;
-}
-
-.cat-grid {
+  padding: 5px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 6fr));
-  column-gap: 35px;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); 
   row-gap: 15px;
+  column-gap: clamp(10px, 2vw, 35px);
   justify-content: center;
 }
