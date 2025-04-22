@@ -1,0 +1,122 @@
+// components/DialogLogIn.module.scss
+@use "sass:color";
+@use "src/styles/variaveis" as *;
+
+// Variáveis (você pode importar de um arquivo se desejar)
+$background: #fff;
+$border-radius: 15px;
+
+.dialog {
+  background: $background;
+  border: 2px solid $cor-secundaria;
+  border-radius: $border-radius;
+  max-width: 300px;
+  max-height: 500px;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-family: sans-serif;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 20px;
+  color: $cor-secundaria;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background: $cor-secundaria;
+  margin-bottom: 15px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  border: 1px solid $cor-secundaria;
+  border-radius: 5px;
+  padding: 5px;
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  .icon {
+    margin-right: 5px;
+    color: $cor-secundaria;
+  }
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: $cor-secundaria;
+}
+
+.button {
+  background: $cor-secundaria;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: color.adjust($cor-secundaria, $lightness: -5%);
+  }
+}
+
+.links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+
+  .linkButton {
+    background: none;
+    border: none;
+    color: $cor-secundaria;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+    padding: 0;
+  }
+}
+
+.logout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.info {
+  font-size: 14px;
+  color: #333;
+}

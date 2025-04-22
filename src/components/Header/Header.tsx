@@ -1,10 +1,25 @@
-import React from "react";
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import styles from "./Header.module.scss";
 import logo from "@/assets/logo.png";
 import { UserCircle2 } from "lucide-react";
+import DialogLogIn from "../Login/Login";
 
 function Header() {
+  const [showDialog, setShowDialog] = useState(false);
+
+  const handleOpenDialog = () => {
+    setShowDialog(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const handleCloseDialog = () => {
+    setShowDialog(false);
+    document.body.style.overflow = "unset";
+  };
+
   return (
     <div className={styles.header}>
       <Image
@@ -13,7 +28,14 @@ function Header() {
         className={styles.logo}
       />
       <Navbar />
-     <UserCircle2 className={styles.iconeUsuario} />
+      <UserCircle2 className={styles.iconeUsuario} onClick={handleOpenDialog} />
+      {showDialog && (
+        <div onClick={handleCloseDialog} className={styles.modalOverlay}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <DialogLogIn />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

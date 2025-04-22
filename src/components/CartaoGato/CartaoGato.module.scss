@@ -2,11 +2,11 @@
 
 .cartaoGato {
   position: relative;
-  width: clamp(200px, 25vw, 240px); // 👈 responsive width
+  width: clamp(200px, 25vw, 240px);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  background-color: #{$cor-primaria};
+  background-color: $cor-primaria;
   border: 3px solid #ff5733;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -18,8 +18,9 @@
 
 /* Container da imagem no topo */
 .containerImagem {
-  border-bottom: 2px solid #ff5733;
   height: 160px;
+  width: 100%;
+  border-bottom: 2px solid #ff5733;
 }
 
 /* Seção de informações na parte inferior */
@@ -75,7 +76,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  display: flex;
   background-color: #eee; // Cor de fundo enquanto a imagem carrega
 }
 

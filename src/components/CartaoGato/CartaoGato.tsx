@@ -4,6 +4,7 @@ import Gato, { Foto } from "@/models/gato";
 import { obterFotosDoGato } from "@/actions/gatos";
 import { Cat, AlertCircle, Scissors, Syringe } from "lucide-react";
 import styles from "./CartaoGato.module.scss";
+import ImagemComCarregamento from "../ImagemComCarregamento/ImagemComCarregamento";
 
 export default function CartaoGato({ gato }: { gato: Gato }) {
   return (
@@ -69,12 +70,11 @@ async function ExibicaoFotosGato({ id, nome }: { id: string; nome: string }) {
   }
 
   return (
-    <Image
+    <ImagemComCarregamento
       src={urls[0]}
       alt={`Foto do gato ${nome}`}
       width={300}
-      height={200}
-      // 2. Usar styles.nomeDaClasse (camelCase)
+      height={150}
       className={styles.imagemGato}
       unoptimized // Mantenha se necessário
     />
