@@ -1,45 +1,35 @@
-// components/DialogLogIn.tsx
 "use client";
 
 import React, { useState, FormEvent } from "react";
-import { AtSign, Key, AlertCircle, User, Lock, UserPlus } from "lucide-react";
-import styles from "./Login.module.scss";
+import { AtSign, Key, User, UserPlus } from "lucide-react";
+import styles from "./Auth.module.scss";
 
-// Tipos simples para controle de páginas internas
 type Page = "login" | "cadastro" | "esqueciSenha" | "logout";
 
 export default function DialogLogIn() {
-  // Estado para controlar qual página está sendo exibida
   const [page, setPage] = useState<Page>("login");
-  // Estados dos formulários (apenas placeholder)
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [lembrar, setLembrar] = useState(false);
   const [nome, setNome] = useState("");
 
-  // Placeholder para indicar se há usuário logado
-  const usuarioLogado = false; // Altere conforme a lógica real
+  const usuarioLogado = false;
 
-  // Funções _placeholder_ para os eventos do formulário
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
     console.log("Fazer login", { email, senha, lembrar });
-    // Implemente a comunicação com o servidor aqui
   };
 
   const handleCadastro = (e: FormEvent) => {
     e.preventDefault();
     console.log("Fazer cadastro", { nome, email });
-    // Implemente a comunicação com o servidor aqui
   };
 
   const handleEsqueciSenha = (e: FormEvent) => {
     e.preventDefault();
     console.log("Recuperar senha para", email);
-    // Implemente a comunicação com o servidor aqui
   };
 
-  // Renderização condicional conforme a página ativa:
   const renderContent = () => {
     if (usuarioLogado) {
       return <PaginaLogOut email={email} />;
@@ -87,7 +77,6 @@ export default function DialogLogIn() {
   return <div className={styles.dialog}>{renderContent()}</div>;
 }
 
-// Página de Login
 type PaginaLoginProps = {
   email: string;
   senha: string;
@@ -115,31 +104,33 @@ function PaginaLogin({
     <form className={styles.form} onSubmit={onSubmit}>
       <h2 className={styles.title}>Seja bem vindo Protetor!</h2>
       <hr className={styles.divider} />
-      <div className={styles.field}>
-        <label>Email</label>
-        <div className={styles.inputGroup}>
-          <AtSign size={20} className={styles.icon} />
-          <input
-            type="email"
-            placeholder="Digite seu email"
-            value={email}
-            onChange={(e) => onChangeEmail(e.target.value)}
-            required
-          />
+      <div>
+        <div className={styles.field}>
+          <label>Email</label>
+          <div className={styles.inputGroup}>
+            <AtSign size={20} className={styles.icon} />
+            <input
+              type="email"
+              placeholder="Digite seu email"
+              value={email}
+              onChange={(e) => onChangeEmail(e.target.value)}
+              required
+            />
+          </div>
         </div>
-      </div>
-      <div className={styles.field}>
-        <label>Senha</label>
-        <div className={styles.inputGroup}>
-          <Key size={20} className={styles.icon} />
-          <input
-            type="password"
-            placeholder="Digite sua senha"
-            value={senha}
-            onChange={(e) => onChangeSenha(e.target.value)}
-            required
-            minLength={6}
-          />
+        <div className={styles.field}>
+          <label>Senha</label>
+          <div className={styles.inputGroup}>
+            <Key size={20} className={styles.icon} />
+            <input
+              type="password"
+              placeholder="Digite sua senha"
+              value={senha}
+              onChange={(e) => onChangeSenha(e.target.value)}
+              required
+              minLength={6}
+            />
+          </div>
         </div>
       </div>
       <div className={styles.checkboxContainer}>
@@ -174,7 +165,6 @@ function PaginaLogin({
   );
 }
 
-// Página de Cadastro
 type PaginaCadastroProps = {
   nome: string;
   email: string;
@@ -238,7 +228,6 @@ function PaginaCadastro({
   );
 }
 
-// Página de "Esqueci a senha"
 type PaginaEsqueciSenhaProps = {
   email: string;
   onChangeEmail: (val: string) => void;
@@ -288,13 +277,11 @@ function PaginaEsqueciSenha({
   );
 }
 
-// Página de Logout (simples placeholder)
 type PaginaLogOutProps = {
   email: string;
 };
 
 function PaginaLogOut({ email }: PaginaLogOutProps) {
-  // Apenas exibe o e-mail e um botão de logout com placeholder
   return (
     <div className={styles.logout}>
       <h2 className={styles.title}>Bem vindo, Protetor!</h2>

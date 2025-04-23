@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "./Header.module.scss";
 import logo from "@/assets/logo.png";
 import { UserCircle2 } from "lucide-react";
-import DialogLogIn from "../Login/Login";
+import DialogLogIn from "../Auth/Auth";
 
 function Header() {
   const [showDialog, setShowDialog] = useState(false);

@@ -10,10 +10,8 @@ $border-radius: 15px;
   background: $background;
   border: 2px solid $cor-secundaria;
   border-radius: $border-radius;
-  max-width: 300px;
-  max-height: 500px;
-  width: 100%;
-  overflow: hidden;
+  width: 300px;
+  overflow: scroll;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   padding: 20px;
 }
@@ -21,14 +19,13 @@ $border-radius: 15px;
 .form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  font-family: sans-serif;
+  gap: 5px;
 }
 
 .title {
   font-weight: bold;
   font-size: 20px;
-  color: $cor-secundaria;
+  color: $cor-foco;
   text-align: center;
   margin-bottom: 10px;
 }
@@ -37,13 +34,11 @@ $border-radius: 15px;
   border: 0;
   height: 1px;
   background: $cor-secundaria;
-  margin-bottom: 15px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 5px;
 }
 
 .inputGroup {
@@ -51,58 +46,93 @@ $border-radius: 15px;
   align-items: center;
   border: 1px solid $cor-secundaria;
   border-radius: 5px;
-  padding: 5px;
+  margin: 5px 0;
 
   input {
     flex: 1;
     border: none;
     outline: none;
-    padding: 5px;
+    padding: 10px;
     font-size: 14px;
+    background-color: #ffff;
+    color: $cor-secundaria;
   }
 
   .icon {
-    margin-right: 5px;
-    color: $cor-secundaria;
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+    color: $cor-foco;
   }
 }
 
 .checkboxContainer {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 14px;
-  color: $cor-secundaria;
+  gap: 12px;
+  font-size: 16px;
+  color: $cor-foco;
+  margin-bottom: 15px;
+
+  input[type="checkbox"] {
+    appearance: none; // Remove default styling
+    width: 18px;
+    height: 18px;
+    border: 2px solid $cor-primaria;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+
+    // Checked state
+    &:checked {
+      background-color: $cor-primaria;
+    }
+
+    // Optional: add checkmark (you can keep it native or style it yourself)
+    &:checked::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 1px;
+      width: 4px;
+      height: 9px;
+      border: solid black;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
 }
 
 .button {
-  background: $cor-secundaria;
-  color: #fff;
+  background: $cor-foco;
+  color: #ffff;
   border: none;
   border-radius: 20px;
   padding: 10px;
-  font-size: 16px;
+  font: var(--default-font);
+  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s ease;
 
   &:hover {
-    background: color.adjust($cor-secundaria, $lightness: -5%);
+    background: color.adjust($cor-primaria, $lightness: -5%);
   }
 }
 
 .links {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 15px;
 
   .linkButton {
     background: none;
     border: none;
     color: $cor-secundaria;
     cursor: pointer;
-    text-decoration: underline;
-    font-size: 14px;
+    font: var(--default-font);
+    font-size: 15px;
     padding: 0;
   }
 }
@@ -112,11 +142,11 @@ $border-radius: 15px;
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  font-family: sans-serif;
   text-align: center;
 }
 
 .info {
-  font-size: 14px;
+  text-align: justify;
+  font-size: 16px;
   color: #333;
 }
