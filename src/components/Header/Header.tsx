@@ -6,6 +6,7 @@ import styles from "./Header.module.scss";
 import logo from "@/assets/logo.png";
 import { UserCircle2 } from "lucide-react";
 import DialogLogIn from "../Auth/Auth";
+import { logInAction } from "@/actions/auth";
 
 function Header() {
   const [showDialog, setShowDialog] = useState(false);
@@ -32,7 +33,7 @@ function Header() {
       {showDialog && (
         <div onClick={handleCloseDialog} className={styles.modalOverlay}>
           <div onClick={(e) => e.stopPropagation()}>
-            <DialogLogIn />
+            <DialogLogIn closeDialog={handleCloseDialog} />
           </div>
         </div>
       )}

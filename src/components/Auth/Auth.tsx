@@ -1,39 +1,164 @@
 "use client";
 
-import React, { useState, FormEvent } from "react";
-import { AtSign, Key, User, UserPlus } from "lucide-react";
+import React, { useState, FormEvent, useEffect, useTransition } from "react";
+import { AtSign, Key, Loader2, LogOut, User, UserPlus } from "lucide-react";
 import styles from "./Auth.module.scss";
+import {
+  getAuthSessionAction,
+  logInAction,
+  logOutAction,
+  resetPasswordAction,
+  signUpAction,
+} from "@/actions/auth";
+import { getDatabaseBrowserClient } from "@/supabase/client";
+import { error } from "console";
 
 type Page = "login" | "cadastro" | "esqueciSenha" | "logout";
 
-export default function DialogLogIn() {
+interface DialogLogInProps {
+  closeDialog: () => void;
+}
+
+export default function DialogLogIn({ closeDialog }: DialogLogInProps) {
   const [page, setPage] = useState<Page>("login");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [lembrar, setLembrar] = useState(false);
   const [nome, setNome] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const usuarioLogado = false;
 
-  const handleLogin = (e: FormEvent) => {
+  useEffect(() => {
+    const saved = localStorage.getItem("lembrarEmail");
+    const email = localStorage.getItem("email");
+
+    const getUserSession = async () => {
+      const { error, accessToken } = await getAuthSessionAction();
+
+      if (!error) {
+        setPage("logout");
+      }
+    };
+
+    getUserSession();
+
+    if (saved === "true") {
+      setLembrar(true);
+      setEmail(email || "");
+    }
+  }, []);
+
+  useEffect(() => {
+    setErrorMessage(null);
+  }, [page]);
+
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Fazer login", { email, senha, lembrar });
+    setErrorMessage(null);
+    startTransition(async () => {
+      try {
+        const result = await logInAction(email, senha);
+        if (result.errorMessage) {
+          setErrorMessage(result.errorMessage);
+          return;
+        }
+
+        if (lembrar) {
+          localStorage.setItem("lembrarEmail", "true");
+          localStorage.setItem("email", email);
+        } else {
+          localStorage.removeItem("lembrarEmail");
+          localStorage.removeItem("email");
+        }
+
+        // Handle successful login
+        console.log("Login successful");
+        setPage("logout");
+      } catch (error) {
+        console.error("Login error:", error);
+        setErrorMessage("Ocorreu um erro ao fazer login");
+      }
+    });
   };
 
-  const handleCadastro = (e: FormEvent) => {
+  const handleCadastro = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Fazer cadastro", { nome, email });
+    setErrorMessage(null);
+
+    startTransition(async () => {
+      try {
+        const password = senha;
+        const result = await signUpAction(email, password);
+
+        if (result.errorMessage) {
+          setErrorMessage(result.errorMessage);
+          console.error("Error signing up:", result.errorMessage);
+          return;
+        }
+
+        // Handle successful registration
+        setPage("login");
+        // You could add a success message here
+      } catch (error) {
+        console.error("Error during signup:", error);
+        setErrorMessage("Ocorreu um erro ao cadastrar");
+      }
+    });
   };
 
-  const handleEsqueciSenha = (e: FormEvent) => {
+  const handleEsqueciSenha = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Recuperar senha para", email);
+    setErrorMessage(null);
+
+    try {
+      const result = await resetPasswordAction(email, window.location.href);
+
+      if (result.errorMessage) {
+        setErrorMessage(result.errorMessage);
+        console.error(
+          "Erro ao enviar email de recuperação:",
+          result.errorMessage
+        );
+        return;
+      }
+
+      // Handle successful password reset request
+      console.log("Email de recuperação enviado para", email);
+      // You could add a success message here
+    } catch (error) {
+      console.error("Password reset error:", error);
+      setErrorMessage("Ocorreu um erro ao enviar o email de recuperação");
+    }
   };
+
+  async function handleLogout() {
+    setErrorMessage(null);
+    startTransition(async () => {
+      try {
+      const { errorMessage } = await logOutAction();
+
+      if (errorMessage) {
+        setErrorMessage(errorMessage);
+        console.error("Erro ao fazer logout:", errorMessage);
+        return;
+      }
+
+      // Handle successful logout
+      setPage("login");
+      } catch (error) {
+      console.error("Logout error:", error);
+      setErrorMessage("Ocorreu um erro ao fazer logout");
+      }
+    });
+  }
 
   const renderContent = () => {
     if (usuarioLogado) {
-      return <PaginaLogOut email={email} />;
+      return <PaginaLogOut email={email} onSubmit={handleLogout} />;
     }
+
     switch (page) {
       case "login":
         return (
@@ -54,10 +179,13 @@ export default function DialogLogIn() {
           <PaginaCadastro
             nome={nome}
             email={email}
+            senha={senha}
             onChangeNome={(val) => setNome(val)}
             onChangeEmail={(val) => setEmail(val)}
+            onChangeSenha={(val) => setSenha(val)}
             onSubmit={handleCadastro}
             onGoToLogin={() => setPage("login")}
+            isPending={isPending}
           />
         );
       case "esqueciSenha":
@@ -69,12 +197,31 @@ export default function DialogLogIn() {
             onGoToLogin={() => setPage("login")}
           />
         );
+      case "logout":
+        return <PaginaLogOut email={email} onSubmit={handleLogout} />;
       default:
         return null;
     }
   };
 
-  return <div className={styles.dialog}>{renderContent()}</div>;
+  return (
+    <div className={styles.dialog}>
+      {isPending ? (
+        <div className={styles.spinnerContainer}>
+          <Loader2 className={styles.spinner} />
+        </div>
+      ) : (
+        <>
+          {renderContent()}
+          <div className={styles.errorMessageContainer}>
+            {errorMessage && (
+              <div className={styles.errorMessage}>{errorMessage}</div>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 type PaginaLoginProps = {
@@ -168,19 +315,25 @@ function PaginaLogin({
 type PaginaCadastroProps = {
   nome: string;
   email: string;
+  senha: string;
   onChangeNome: (val: string) => void;
   onChangeEmail: (val: string) => void;
+  onChangeSenha: (val: string) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   onGoToLogin: () => void;
+  isPending: boolean;
 };
 
 function PaginaCadastro({
   nome,
   email,
+  senha,
   onChangeNome,
   onChangeEmail,
+  onChangeSenha,
   onSubmit,
   onGoToLogin,
+  isPending,
 }: PaginaCadastroProps) {
   return (
     <form className={styles.form} onSubmit={onSubmit}>
@@ -212,14 +365,29 @@ function PaginaCadastro({
           />
         </div>
       </div>
-      <button type="submit" className={styles.button}>
-        <UserPlus size={16} /> Cadastrar
+      <div className={styles.field}>
+        <label>Senha</label>
+        <div className={styles.inputGroup}>
+          <Key size={20} className={styles.icon} />
+          <input
+            type="password"
+            placeholder="Digite sua senha"
+            value={senha}
+            onChange={(e) => onChangeSenha(e.target.value)}
+            required
+            minLength={6}
+          />
+        </div>
+      </div>
+      <button type="submit" className={styles.button} disabled={isPending}>
+        <UserPlus size={16} /> {isPending ? "Cadastrando..." : "Cadastrar"}
       </button>
       <div className={styles.links}>
         <button
           type="button"
           onClick={onGoToLogin}
           className={styles.linkButton}
+          disabled={isPending}
         >
           Voltar para Login
         </button>
@@ -279,17 +447,16 @@ function PaginaEsqueciSenha({
 
 type PaginaLogOutProps = {
   email: string;
+  onSubmit: () => void;
 };
 
-function PaginaLogOut({ email }: PaginaLogOutProps) {
+function PaginaLogOut({ email, onSubmit }: PaginaLogOutProps) {
   return (
     <div className={styles.logout}>
       <h2 className={styles.title}>Bem vindo, Protetor!</h2>
       <p className={styles.info}>Logado como: {email || "email@exemplo.com"}</p>
-      <button
-        className={styles.button}
-        onClick={() => console.log("Fazer Logout placeholder")}
-      >
+      <button className={styles.button} onClick={onSubmit}>
+        <LogOut size={16} />
         Fazer Logout
       </button>
     </div>

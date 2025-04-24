@@ -4,7 +4,6 @@ import Gato from "@/models/gato";
 import { obterTodosOsGatos } from "@/actions/gatos";
 import CartaoGato from "@/components/CartaoGato/CartaoGato";
 import "./home.scss";
-import { Itim } from "next/font/google";
 
 async function Home() {
   const gatos = await obterTodosOsGatos().then((gatos) =>

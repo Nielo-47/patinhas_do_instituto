@@ -1,7 +1,5 @@
 export const handleError = (error: unknown) => {
-  if (error instanceof Error) {
-    return { errorMessage: error.message };
-  } else {
-    return { errorMessage: "Um erro ocorreu" };
-  }
+  const msg = error instanceof Error ? error.message : "Um erro ocorreu";
+
+  return { errorMessage: msg };
 };
