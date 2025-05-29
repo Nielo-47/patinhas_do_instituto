@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState, FormEvent, useEffect, useTransition } from "react";
-import { AtSign, Key, Loader2, LogOut, User, UserPlus } from "lucide-react";
+import {
+  AtSign,
+  Eye,
+  Key,
+  Loader2,
+  LogOut,
+  User,
+  UserPlus,
+} from "lucide-react";
 import styles from "./Auth.module.scss";
 import {
   getAuthSessionAction,
@@ -137,19 +145,19 @@ export default function DialogLogIn({ closeDialog }: DialogLogInProps) {
     setErrorMessage(null);
     startTransition(async () => {
       try {
-      const { errorMessage } = await logOutAction();
+        const { errorMessage } = await logOutAction();
 
-      if (errorMessage) {
-        setErrorMessage(errorMessage);
-        console.error("Erro ao fazer logout:", errorMessage);
-        return;
-      }
+        if (errorMessage) {
+          setErrorMessage(errorMessage);
+          console.error("Erro ao fazer logout:", errorMessage);
+          return;
+        }
 
-      // Handle successful logout
-      setPage("login");
+        // Handle successful logout
+        setPage("login");
       } catch (error) {
-      console.error("Logout error:", error);
-      setErrorMessage("Ocorreu um erro ao fazer logout");
+        console.error("Logout error:", error);
+        setErrorMessage("Ocorreu um erro ao fazer logout");
       }
     });
   }
@@ -335,6 +343,7 @@ function PaginaCadastro({
   onGoToLogin,
   isPending,
 }: PaginaCadastroProps) {
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <form className={styles.form} onSubmit={onSubmit}>
       <h2 className={styles.title}>Cadastro</h2>
@@ -368,8 +377,9 @@ function PaginaCadastro({
       <div className={styles.field}>
         <label>Senha</label>
         <div className={styles.inputGroup}>
-          <Key size={20} className={styles.icon} />
+          <Key size={40} className={styles.icon} />
           <input
+            // type={showPassword ? "text" : "password"}
             type="password"
             placeholder="Digite sua senha"
             value={senha}
@@ -377,6 +387,7 @@ function PaginaCadastro({
             required
             minLength={6}
           />
+          <Eye size={20} className={styles.hideShowIcon} />
         </div>
       </div>
       <button type="submit" className={styles.button} disabled={isPending}>

@@ -26,6 +26,7 @@ $border-radius: 15px;
   flex-direction: column;
   gap: 10px;
   color: black;
+  max-width: 80%;
 }
 
 .title {
@@ -52,9 +53,20 @@ $border-radius: 15px;
   align-items: center;
   border: 1px solid $cor-secundaria;
   border-radius: 5px;
+  padding: 2.5px 0;
   margin: 5px 0;
 
   input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 14px;
+    background-color: #ffff;
+    color: $cor-secundaria;
+  }
+
+  .password {
     flex: 1;
     border: none;
     outline: none;
@@ -70,6 +82,14 @@ $border-radius: 15px;
     margin: 0 5px;
     color: $cor-foco;
   }
+
+  // .hideShowIcon {
+  //   flex: 1;
+  //   cursor: pointer;
+  //   color: $cor-foco;
+  //   margin: 0 5px;
+  //   width: 20px;
+  // }
 }
 
 .checkboxContainer {
