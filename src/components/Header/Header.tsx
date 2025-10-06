@@ -3,7 +3,7 @@
 import { useState, useContext } from "react";
 import Link from "next/link";
 import styles from "./Header.module.scss";
-import { UserCircle2, Cat } from "lucide-react";
+import { CircleUser as UserCircle2, Cat } from "lucide-react";
 import DialogLogIn from "../Auth/Auth";
 import { UserContext } from "@/providers/UserContext";
 

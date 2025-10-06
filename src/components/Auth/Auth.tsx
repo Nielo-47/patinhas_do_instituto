@@ -1,15 +1,7 @@
 "use client";
 
 import React, { useState, FormEvent, useEffect, useTransition } from "react";
-import {
-  AtSign,
-  Eye,
-  Key,
-  Loader2,
-  LogOut,
-  User,
-  UserPlus,
-} from "lucide-react";
+import { AtSign, Eye, Key, Loader as Loader2, LogOut, User, UserPlus } from "lucide-react";
 import styles from "./Auth.module.scss";
 import {
   getAuthSessionAction,
