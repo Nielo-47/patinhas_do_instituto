@@ -1,34 +1,12 @@
-import Gato, { StatusGato } from "@/models/gato";
+import Gato from "@/models/gato";
 import { obterTodosOsGatos } from "@/actions/gatos";
-import CartaoGato from "@/components/CartaoGato/CartaoGato";
-import styles from "./home.module.scss";
-import Filtros from "@/components/Filtros/Filtros";
-import { useState } from "react";
-
-type InfoFiltros = {
-  status: StatusGato;
-  pesquisa: string;
-
-}
+import HomeClient from "./HomeClient";
 
 async function Home() {
-  const [infoFiltros, setInfoFiltros] = useState({})
-  const gatos = await obterTodosOsGatos().then((gatos) =>
-    gatos.map((g) => Gato.fromDict(g))
-  );
+  const gatosData = await obterTodosOsGatos();
+  const gatos = gatosData.map((g) => Gato.fromDict(g));
 
-  return (
-    <div className={styles.wrapper}>
-      <div className={styles.filtros}>
-        <Filtros />
-      </div>
-    <div className={styles.catGrid}>
-        {gatos.map((gato) => (
-          <CartaoGato key={gato.id} gato={gato} />
-        ))}
-      </div>
-    </div>
-    
-  );
+  return <HomeClient gatos={gatos} />;
 }
+
 export default Home;

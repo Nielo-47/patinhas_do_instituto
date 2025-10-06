@@ -1,31 +1,45 @@
 "use client";
 
 import { useState } from "react";
+import { StatusGato } from "@/models/gato";
 import styles from "./Filtros.module.scss";
 import { Search } from "lucide-react";
 
+interface FiltrosProps {
+  total: number;
+  mostrando: number;
+  aoCadastrar?: () => void;
+  aoPesquisar?: (valor: string) => void;
+  aoMudarFiltro?: (status: StatusGato | null) => void;
+  mostrarBotaoCadastro?: boolean;
+}
+
 export default function Filtros({
-  total = 97,
-  mostrando = 50,
+  total,
+  mostrando,
   aoCadastrar = () => {},
-  aoPesquisar = (valor: string) => {},
-}) {
+  aoPesquisar = () => {},
+  aoMudarFiltro = () => {},
+  mostrarBotaoCadastro = false,
+}: FiltrosProps) {
   const abas = [
-    { chave: "semCampus", label: "No Campus" },
-    { chave: "emTratamento", label: "Em Tratamento" },
-    { chave: "adotados", label: "Adotados!" },
-    { chave: "falecidos", label: "Falecidos" },
-    { chave: "desconhecido", label: "Desconhecido" },
+    { chave: null, label: "Todos", status: null },
+    { chave: "campus", label: "No Campus", status: StatusGato.no_campus },
+    { chave: "tratamento", label: "Em Tratamento", status: StatusGato.em_tratamento },
+    { chave: "adotado", label: "Adotados!", status: StatusGato.adotado },
+    { chave: "falecido", label: "Falecidos", status: StatusGato.falecido },
+    { chave: "desconhecido", label: "Desconhecido", status: StatusGato.desconhecido },
   ];
-  const [abaAtiva, setAbaAtiva] = useState(abas[0].chave);
+
+  const [abaAtiva, setAbaAtiva] = useState<string | null>(null);
   const [consulta, setConsulta] = useState("");
 
-  const aoClicarAba = (chave: string) => {
+  const aoClicarAba = (chave: string | null, status: StatusGato | null) => {
     setAbaAtiva(chave);
-    // opcional: notificar componente pai
+    aoMudarFiltro(status);
   };
 
-  const aoMudarBusca = (e: { target: { value: any } }) => {
+  const aoMudarBusca = (e: React.ChangeEvent<HTMLInputElement>) => {
     const valor = e.target.value;
     setConsulta(valor);
     aoPesquisar(valor);
@@ -35,15 +49,15 @@ export default function Filtros({
     <div>
       <div className={styles.container}>
         <nav className={styles.abas}>
-          {abas.map(({ chave, label }) => (
+          {abas.map(({ chave, label, status }) => (
             <button
-              key={chave}
+              key={chave || "todos"}
               className={
                 chave === abaAtiva
                   ? `${styles.itemAba} ${styles.ativo}`
                   : styles.itemAba
               }
-              onClick={() => aoClicarAba(chave)}
+              onClick={() => aoClicarAba(chave, status)}
             >
               {label}
             </button>
@@ -55,9 +69,12 @@ export default function Filtros({
           Mostrando {mostrando} de {total} gatos
         </span>
 
-        <button className={styles.botaoCadastrar} onClick={aoCadastrar}>
-          Cadastrar novo
-        </button>
+        {mostrarBotaoCadastro && (
+          <button className={styles.botaoCadastrar} onClick={aoCadastrar}>
+            Cadastrar novo
+          </button>
+        )}
+
         <div className={styles.wrapperBusca}>
           <Search />
           <input

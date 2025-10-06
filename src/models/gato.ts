@@ -147,10 +147,10 @@ enum StatusInformacao {
 
 enum Sexo {
   masculino = "MASCULINO",
-  feminino = "MASCULINO",
+  feminino = "FEMININO",
   desconhecido = "DESCONHECIDO",
 }
 
 export default Gato;
 export type { DadosGato, Foto };
-export { StatusGato };
+export { StatusGato, StatusInformacao, Sexo };

@@ -81,9 +81,8 @@ export default function DialogLogIn({ closeDialog }: DialogLogInProps) {
           localStorage.removeItem("email");
         }
 
-        // Handle successful login
-        console.log("Login successful");
-        setPage("logout");
+        closeDialog();
+        window.location.reload();
       } catch (error) {
         console.error("Login error:", error);
         setErrorMessage("Ocorreu um erro ao fazer login");
@@ -98,7 +97,7 @@ export default function DialogLogIn({ closeDialog }: DialogLogInProps) {
     startTransition(async () => {
       try {
         const password = senha;
-        const result = await signUpAction(email, password);
+        const result = await signUpAction(email, password, nome);
 
         if (result.errorMessage) {
           setErrorMessage(result.errorMessage);
@@ -106,9 +105,9 @@ export default function DialogLogIn({ closeDialog }: DialogLogInProps) {
           return;
         }
 
-        // Handle successful registration
         setPage("login");
-        // You could add a success message here
+        setErrorMessage(null);
+        alert("Protetor cadastrado com sucesso! Faça login para continuar.");
       } catch (error) {
         console.error("Error during signup:", error);
         setErrorMessage("Ocorreu um erro ao cadastrar");
@@ -153,8 +152,8 @@ export default function DialogLogIn({ closeDialog }: DialogLogInProps) {
           return;
         }
 
-        // Handle successful logout
-        setPage("login");
+        closeDialog();
+        window.location.reload();
       } catch (error) {
         console.error("Logout error:", error);
         setErrorMessage("Ocorreu um erro ao fazer logout");

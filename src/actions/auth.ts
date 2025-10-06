@@ -31,17 +31,46 @@ export const logOutAction = async () => {
   }
 };
 
-export const signUpAction = async (email: string, password: string) => {
+export const signUpAction = async (
+  email: string,
+  password: string,
+  nome: string
+) => {
   try {
-    const { auth } = await getDatabaseServerClient();
-    const { data, error } = await auth.signUp({ email, password });
+    const database = await getDatabaseServerClient();
+    const { auth } = database;
+
+    const { data: sessionData } = await auth.getSession();
+    if (!sessionData.session) {
+      return { errorMessage: "Você precisa estar autenticado para cadastrar um protetor" };
+    }
+
+    const cadastradoPor = sessionData.session.user.id;
+
+    const { data, error } = await auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: undefined,
+      },
+    });
 
     if (error) throw error;
 
     const userId = data.user?.id;
-    if (!userId) throw new Error("Error signing up");
+    if (!userId) throw new Error("Erro ao criar usuário");
 
-    await auth.signUp({ email: email, password: password });
+    const { error: dbError } = await database.from("protetores").insert({
+      id: userId,
+      nome,
+      email,
+      fotos: [],
+      cadastrado_por: cadastradoPor,
+    });
+
+    if (dbError) {
+      throw dbError;
+    }
 
     return { errorMessage: null };
   } catch (error) {

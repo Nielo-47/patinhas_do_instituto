@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useContext } from "react";
+import Link from "next/link";
 import styles from "./Header.module.scss";
-import logo from "@/assets/logo.png";
-import { UserCircle2 } from "lucide-react";
+import { UserCircle2, Cat } from "lucide-react";
 import DialogLogIn from "../Auth/Auth";
-import { logInAction } from "@/actions/auth";
+import { UserContext } from "@/providers/UserContext";
 
 function Header() {
   const [showDialog, setShowDialog] = useState(false);
+  const { user, isProtetor } = useContext(UserContext);
 
   const handleOpenDialog = () => {
     setShowDialog(true);
@@ -23,12 +23,13 @@ function Header() {
 
   return (
     <div className={styles.header}>
-      <Image
-        src={logo}
-        alt="Logo do Instituto Patinhas"
-        className={styles.logo}
-      />
-      <Navbar />
+      <Link href="/" className={styles.logoLink}>
+        <div className={styles.logo}>
+          <Cat size={40} />
+          <span>Patinhas do Instituto</span>
+        </div>
+      </Link>
+      <Navbar isProtetor={isProtetor} />
       <UserCircle2 className={styles.iconeUsuario} onClick={handleOpenDialog} />
       {showDialog && (
         <div onClick={handleCloseDialog} className={styles.modalOverlay}>
@@ -41,14 +42,20 @@ function Header() {
   );
 }
 
-function Navbar() {
+function Navbar({ isProtetor }: { isProtetor: boolean }) {
   return (
     <nav className={styles.navbar}>
-      <div className={styles.item}>Censo</div>
+      <Link href="/" className={styles.item}>
+        Censo
+      </Link>
       <div className={styles.divisor} />
-      <div className={styles.item}>Gráficos</div>
+      <Link href="/graficos" className={styles.item}>
+        Gráficos
+      </Link>
       <div className={styles.divisor} />
-      <div className={styles.item}>Protetores</div>
+      <Link href="/protetores" className={styles.item}>
+        Protetores
+      </Link>
     </nav>
   );
 }

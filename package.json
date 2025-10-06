@@ -4,13 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npx prisma generate && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "migrate": "npx prisma generate && env $(cat .env.local | xargs) npx prisma migrate dev"
-  },
-  "prisma": {
-    "schema": "src/db/schema.prisma"
+    "lint": "next lint"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
